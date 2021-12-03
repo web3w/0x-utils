@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+</head>
+<body>
+<div id="zeroExInstantContainer">
+    <button id="signHash"> Hash Eth_sign Signature</button>
+    <button id="signOrder">Order712 Signature</button>
+    <button id="signInfo">Order signInfo</button>
+
+    <button id="loginBtn">Login Btn</button>
+    <br/>
+    <br/>
+
+    <button id="postOrderV2">Post Sell Order</button>
+</div>
+<!--<script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js" type="application/javascript"></script>-->
+<script type="module">
+  let accounts
+  const NULL_ADDRESS = '0x0000000000000000000000000000000000000000'
+  const order = {
+    makerAddress: '0x0A56b3317eD60dC4E1027A63ffbE9df6fb102401',
+    takerAddress: NULL_ADDRESS,
+    feeRecipientAddress: NULL_ADDRESS,
+    senderAddress: NULL_ADDRESS,
+    makerFee: new BigNumber('0'),
+    takerFee: new BigNumber('0'),
+    makerAssetAmount: new BigNumber('200000000000000000000'),
+    takerAssetAmount: new BigNumber('10000000000000000000'),
+    expirationTimeSeconds: new BigNumber('164993050008200'),
+    salt: new BigNumber('90'),
+    makerAssetData: '0xf47261b00000000000000000000000008cb3971b8eb709c14616bd556ff6683019e90d9c',
+    takerAssetData: '0xf47261b00000000000000000000000008cb3971b8eb709c14616bd556ff6683019e90d9c',
+    makerFeeAssetData: '0x',
+    takerFeeAssetData: '0x'
+  }
+  let account, orderApi
+
+  async function main() {
+    accounts = await window.ethereum.request({ method: 'eth_requestAccounts' }) // enable ethereum
+    // const provider = new ethers.providers.Web3Provider(window.ethereum)
+    // const signer = provider.getSigner()
+    // const address = await signer.getAddress()
+    // signer.address = accounts[0]
+    // console.log(signer)
+    const chainId = +window.ethereum.chainId
+    const address = accounts[0]
+    account = new ZeroExOrder({ chainId, address })
+
+    orderApi = new ElementOrdersV2({ chainId, address })
+
+    console.log(account)
+
+  }
+
+  main()
+
+  const signHash = document.getElementById('signHash')
+  signHash.onclick = async () => {
+    console.log('signHash')
+    const signatuer = await account.orderHashSign(order)
+    console.log(account.signerAddress, signatuer)
+  }
+
+  const signInfo = document.getElementById('signInfo')
+  signInfo.onclick = async () => {
+    console.log('signInfo')
+    const signatuer = await account.getOrderInfo(order)
+    console.log(signatuer)
+  }
+  const signOrder = document.getElementById('signOrder')
+  signOrder.onclick = async () => {
+    console.log('signOrder')
+    const signatuer = await account.orderSign(order)
+    console.log(account.signerAddress, signatuer)
+  }
+
+  const loginBtn = document.getElementById('loginBtn')
+  loginBtn.onclick = async () => {
+    console.log('signOrder')
+    const signatuer = await orderApi.getLoginAuthToken()
+    debugger
+    console.log('getLoginAuthToken', account.signerAddress, signatuer)
+  }
+
+  const postOrderV2Btn = document.getElementById('postOrderV2')
+  postOrderV2Btn.onclick = async () => {
+    console.log('postOrderV2')
+
+    const sellAsset = {
+      tokenId: '1',
+      // tokenAddress: '0x06012c8cf97bead5deae237070f9587f8e7a266d', Main
+      tokenAddress: '0x1530272ce6e4589f5c09151a7c9a118a58d70e09',
+      schemaName: 'ERC721'
+    }
+
+    const sellParams = {
+      asset: sellAsset,
+      accountAddress: accounts[0],
+      startAmount: 0.0001
+    }
+    console.log(sellParams)
+
+    const signatuer = await orderApi.postSellOrder(sellParams)
+    // const signatuer = await orderApi.ordersConfData()
+
+    debugger
+    console.log('postOrderV2Btn', account.signerAddress, signatuer)
+  }
+
+
+</script>
+</body>
+</html>

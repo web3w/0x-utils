@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <title>Add React in One Minute</title>
+</head>
+<body>
+<button id="loginBtn">Login</button>
+<p>Account: <span id="accountAddr"></span> chainId <span id="chainId"></span></p>
+<p>Gas Token: <span id="gasTokenAddr"></span></p>
+
+<hr>
+<span>ERC721: <input value="" id="erc721Addr" style="width:320px;margin:6px">
+    tokenId:<input value="3" id="token721Id" style="width:28px "></span><br/>
+<button id="get721AssetBalance">ERC721 Balance</button>
+
+<button onclick="getOrderList('ERC721')">Get Orders</button>
+<div id="order721List"></div>
+<br/>
+<span>ERC1155: <input value="" id="erc1155Addr" style="width:320px;margin:6px ">
+tokenId:<input value="3" id="token1155Id" style="width:60px "> </span> <br/>
+<button id="get1155AssetBalance">ERC1155 Balance</button>
+<button onclick="getOrderList('ERC1155')">Get Orders</button>
+<div id="order1155List"></div>
+<br/>
+
+ERC20: <input value="" id="erc20Addr" style="width:328px;margin:6px ">
+<button id="get20AssetBalance">ERC20 Balance</button>
+<hr/>
+
+Asset Price <input value="0.001" id="erc721Price" style="width:38px ">
+<p>Creat Sell ERC721 Order
+
+    <button id="postSellOrderByGasToken"> By GasToken</button>
+
+    <button id="postSellOrderErc20"> By ERC20</button>
+
+</p>
+
+<p>Creat Buy ERC721 Order
+
+    <button id="postBuyGasTokenOrder">By GasToken</button>
+
+    <button id="postBuyOrderErc20">By ERC20</button>
+
+</p>
+
+<hr>
+
+
+<!--<button id="buyOfBNB">buyOfBNB</button>-->
+<!--<button id="buyErc20">buyOfERC20</button>-->
+
+<script type="module">
+  let accounts
+  let orderApi
+
+  const bscTestMockAsset = {
+    'erc20': '0x26aFE7885cdCFF35ADE8498Bd183577dC98E3fcc',
+    'erc721': '0x066561b3369fa33E56D58C3fcE621FF82B4Cdd3F',
+    'erc1155': '0x2a3eCaeA2A31bb34e84835Bd6799614304AaFa5F'
+  }
+
+  const token721Id = 3
+  const token1155Id = 1
+
+  async function main() {
+    document.getElementById('token721Id').value = token721Id
+
+    document.getElementById('token1155Id').value = token1155Id
+
+    accounts = await window.ethereum.request({ method: 'eth_requestAccounts' }) // enable ethereum
+    const chainId = +window.ethereum.chainId
+    const address = accounts[0]
+    document.getElementById('accountAddr').innerText = address.toLowerCase()
+    document.getElementById('chainId').innerText = chainId
+    orderApi = new ElementOrdersV2({ chainId, address })
+    const gasTokenAddr = orderApi.zeroExchange.wethContract.address
+    document.getElementById('gasTokenAddr').innerText = gasTokenAddr
+    document.getElementById('erc20Addr').value = bscTestMockAsset.erc20.toLowerCase()
+    document.getElementById('erc721Addr').value = bscTestMockAsset.erc721.toLowerCase()
+    document.getElementById('erc1155Addr').value = bscTestMockAsset.erc1155.toLowerCase()
+  }
+
+  async function matchOrder(order) {
+    console.log('OrderMatch ', order)
+    const isMaker = order.makerAddress == document.getElementById('accountAddr').innerText
+
+    if (isMaker) {
+      //取消订单
+      const tx = await orderApi.zeroExchange.cancelOrder(order)
+      await tx.wait().catch(e => {
+        console.log(e)
+      })
+      console.log(tx.hash, tx.logs)
+      alert('Cancel Success')
+    } else {
+      //成交订单
+      const tx = await orderApi.zeroExchange.orderMatch(order)
+      await tx.wait().catch(e => {
+        console.log(e)
+      })
+      console.log(tx.hash, tx.logs)
+      alert('OrderMatch Success')
+    }
+
+  }
+
+  window.matchOrder = matchOrder
+
+  async function hashOrder(order) {
+    console.log('HashOrder ', order)
+    const hash = await orderApi.zeroExchange.exchange.getOrderInfo(order)
+    alert(hash)
+
+  }
+
+  window.hashOrder = hashOrder
+
+
+  async function getOrderList(type) {
+    const orderType = -1
+    let tokenId = type == 'ERC1155' ? document.getElementById('token1155Id').value : document.getElementById('token721Id').value
+    const assetContractAddress = type == 'ERC1155' ? document.getElementById('erc1155Addr').value : document.getElementById('erc721Addr').value
+    const params = { tokenId, assetContractAddress, orderType }
+    const orders = await orderApi.ordersQuery(params)
+    let orderDiv = ''
+    if (!orders.length) {
+      alert('no order list')
+      return
+    }
+    const gasTokenAddr = document.getElementById('gasTokenAddr').innerText.toLowerCase()
+    for (const order of orders) {
+      const orderType = order.side == 0 ? '<b>(买-单)</b>' : '<b>(卖-单)</b>'
+
+      const payType = order.paymentToken == gasTokenAddr ? 'GasToken' : 'ERC20'
+      const makerOrder = order.maker == document.getElementById('accountAddr').innerText
+      const btnType = makerOrder ? '取消' : order.side ? '购买' : '出售'
+
+      orderDiv += `<p>${order.id}  ${order.metadata.schema} ${orderType}
+                        数量 ${order.quantity}, PayTokne ${payType},Pay Amount${order.price}
+                        <button onclick=matchOrder(${order.exchangeData})>${btnType}</button>
+                        <button onclick=hashOrder(${order.exchangeData})>HASH</button>
+                   </p>`
+    }
+    const list = type == 'ERC1155' ? document.getElementById('order1155List') : document.getElementById('order721List')
+    list.innerHTML = orderDiv
+  }
+
+  window.getOrderList = getOrderList
+
+
+  main()
+
+  const loginBtn = document.getElementById('loginBtn')
+  loginBtn.onclick = async () => {
+    const authToken = await orderApi.getLoginAuthToken()
+    alert(authToken)
+  }
+  const asset721BalBtn = document.getElementById('get721AssetBalance')
+  asset721BalBtn.onclick = async () => {
+    const tokenId = document.getElementById('token721Id').value
+    const assetAddr = document.getElementById('erc721Addr').value
+    const bal = await orderApi.userAccount.getERC721Balances(assetAddr, tokenId)
+    alert(bal)
+  }
+
+
+  const asset20BalBtn = document.getElementById('get20AssetBalance')
+  asset20BalBtn.onclick = async () => {
+    const tokenAddr = document.getElementById('erc20Addr').value
+    // const bal = await orderApi.userAccount.getERC20Balances(tokenAddr)
+    const gasBal = await orderApi.userAccount.getAccountBalance({ tokenAddr })
+    alert(`GasToken:${gasBal.ethBal} Erc20:${gasBal.erc20Bal}`)
+  }
+
+  const paymentToken = {
+    name: 'TST',
+    address: document.getElementById('erc20Addr').value,
+    symbol: 'TST',
+    decimals: 18
+  }
+  const sellOrderGasTokenBtn = document.getElementById('postSellOrderByGasToken')
+  sellOrderGasTokenBtn.onclick = async () => {
+    const sellToken = document.getElementById('erc721Addr').value
+    const sellTokenId = document.getElementById('token721Id').value
+    const startAmount = document.getElementById('erc721Price').value
+    const sellAsset = {
+      tokenId: sellTokenId,
+      tokenAddress: sellToken,
+      schemaName: 'ERC721'
+    }
+    const sellParams = {
+      asset: sellAsset,
+      startAmount
+    }
+    console.log(sellParams)
+    const singSellOrder = await orderApi.zeroExchange.createSellOrder(sellParams)
+    const postSellOrder = await orderApi.postSingedOrder(singSellOrder, OrderType.Sell)
+    console.log('postSellOrder', postSellOrder)
+    alert(`Sell Order Post id: $(postSellOrder.id} ${postSellOrder.price}  $(postSellOrder.orderType}`)
+  }
+
+  const sellOrderByErc20Btn = document.getElementById('postSellOrderErc20')
+  sellOrderByErc20Btn.onclick = async () => {
+    const sellToken = document.getElementById('erc721Addr').value
+    const sellTokenId = document.getElementById('token721Id').value
+    const startAmount = document.getElementById('erc721Price').value
+    paymentToken.address = document.getElementById('erc20Addr').value
+    const sellAsset = {
+      tokenId: sellTokenId,
+      tokenAddress: sellToken,
+      schemaName: 'ERC721'
+    }
+
+    const sellParams = {
+      asset: sellAsset,
+      paymentToken,
+      startAmount
+    }
+    console.log(sellParams)
+    try {
+      const singSellOrder = await orderApi.zeroExchange.createSellOrder(sellParams)
+      const postSellOrder = await orderApi.postSingedOrder(singSellOrder, OrderType.Sell)
+      console.log('postSellOrder', postSellOrder)
+      alert(`Sell Order Post id: $(postSellOrder.id} ${postSellOrder.price}  $(postSellOrder.orderType}`)
+    } catch (e) {
+      alert(e)
+    }
+
+  }
+
+  const postBuyGasTokenOrderBtn = document.getElementById('postBuyGasTokenOrder')
+  postBuyGasTokenOrderBtn.onclick = async () => {
+
+    const buyToken = document.getElementById('erc721Addr').value
+    const buyTokenId = document.getElementById('token721Id').value
+    const startAmount = document.getElementById('erc721Price').value
+
+    // const startAmount = 0.0012
+    const buyAsset = {
+      tokenId: buyTokenId,
+      tokenAddress: buyToken,
+      schemaName: 'ERC721'
+    }
+
+    const buyParams = {
+      asset: buyAsset,
+      expirationTime: 0,
+      startAmount
+    }
+
+    const singBuyOrder = await orderApi.zeroExchange.createBuyOrder(buyParams)
+    const postBuyOrder = await orderApi.postSingedOrder(singBuyOrder, OrderType.Buy)
+    console.log('postSellOrder', postBuyOrder)
+    alert(`Buy Order Post id: $(postBuyOrder.id} ${postBuyOrder.price}  $(postBuyOrder.orderType}`)
+  }
+
+
+  const postBuyOrderErc20V2Btn = document.getElementById('postBuyOrderErc20')
+  postBuyOrderErc20V2Btn.onclick = async () => {
+    const buyToken = document.getElementById('erc721Addr').value
+    const buyTokenId = document.getElementById('token721Id').value
+    const startAmount = document.getElementById('erc721Price').value
+    paymentToken.address = document.getElementById('erc20Addr').value
+    const buyAsset = {
+      tokenId: buyTokenId,
+      tokenAddress: buyToken,
+      schemaName: 'ERC721'
+    }
+
+    const buyParams = {
+      asset: buyAsset,
+      startAmount,
+      paymentToken
+    }
+    const singBuyOrder = await orderApi.zeroExchange.createBuyOrder(buyParams)
+    const postBuyOrder = await orderApi.postSingedOrder(singBuyOrder, OrderType.Buy)
+    console.log('postSellOrder', postBuyOrder)
+    alert(`Buy Order Post id: $(postBuyOrder.id} ${postBuyOrder.price}  $(postBuyOrder.orderType}`)
+
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,45 @@
+{
+  "include": [
+    "../src/**/*",
+    "../index.ts"
+  ],
+  "exclude": [
+    "./node_modules",
+    "./test/**/*",
+    "config/webpack.config.js",
+    "config/webpack.node.config.js"
+  ],
+  "compilerOptions": {
+    "outDir": "../lib",
+    "baseUrl": "../src",
+    "paths": {
+      "@0x/utils": ["utils/index"],// 此处映射是相对于"baseUrl"
+      "@0x/types": ["types/types"],
+      "@0x/assert": ["assert/index"]
+    },
+    "declaration": true,
+    "noImplicitThis": false,
+    "module": "commonjs",
+    "target": "es5",
+    "types": ["node"],
+    "lib": ["es2017", "dom"],
+    "sourceMap": true,
+    "experimentalDecorators": true,
+    "noImplicitReturns": true,
+    /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017', 'ES2018', 'ES2019', 'ES2020', or 'ESNEXT'. */
+    /* Specify module code generation: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', 'es2020', or 'ESNext'. */
+    "resolveJsonModule": true,
+    /* 增加 type  类型的检查 */
+    "isolatedModules": true,
+    // 支持导入json模块
+    "strict": true,
+    /* Enable all strict type-checking options. */
+    "esModuleInterop": true,
+    /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */
+    "skipLibCheck": true,
+    /* Skip type checking of declaration files. */
+    "forceConsistentCasingInFileNames": true,
+    /* Disallow inconsistently-cased references to the same file. */
+    "downlevelIteration": true
+  }
+}
