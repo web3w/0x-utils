@@ -1,3 +1,4 @@
+// require('module-alias/register');
 import { Schema, SchemaValidator, schemas } from './src'
 import { addressUtils, BigNumber } from '../utils'
 import * as _ from 'lodash'

@@ -21,7 +21,7 @@ import {
   ZeroExProvider
 } from 'ethereum-types'
 import * as _ from 'lodash'
-import { EIP712TypedData, WalletPrikey } from '@0x/types'
+import { EIP712TypedData, WalletPrikey } from '../../../index'
 import { signTypedDataUtils } from './sign_typed_data_utils'
 
 class SingerProvider {

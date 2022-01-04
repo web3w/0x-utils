@@ -1,4 +1,4 @@
-import chalk from 'chalk';
+
 import * as _ from 'lodash';
 
 const DEFAULT_TERMINAL_WIDTH = 80;
@@ -25,6 +25,6 @@ export const logUtils = {
         console.table(formattedColumnarData); // tslint:disable-line:no-console
     },
     logWithTime(arg: string): void {
-        logUtils.log(`[${chalk.gray(new Date().toLocaleTimeString())}] ${arg}`);
+        logUtils.log(`[${ new Date().toLocaleTimeString()}] ${arg}`);
     },
 };

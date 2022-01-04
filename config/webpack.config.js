@@ -1,5 +1,7 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const webpack = require('webpack')
+
+// const npm_package = require('../package.json')
 //
 // plugins: [
 //   new HtmlWebpackPlugin({ template: path.join(__dirname, 'index.html') }),
@@ -18,11 +20,6 @@ module.exports = {
     entry: './index.ts',
     module: {
         rules: [
-            {
-                test: /\.ts$/,
-                exclude: /node_modules/,
-                loader: 'babel-loader'
-            },
             {
                 test: /\.ts$/,
                 exclude: /node_modules/,
@@ -47,11 +44,6 @@ module.exports = {
     },
     devtool: 'inline-source-map',
     resolve: {
-        alias: {
-            '@0x/assert': path.resolve(__dirname, '../src/assert/index'),
-            '@0x/types': path.resolve(__dirname, '../src/types/types'),
-            process: 'process/browser'
-        },
         extensions: ['.ts', '.js', '.json'],
         fallback: {
             'crypto': require.resolve('crypto-browserify'),
@@ -61,7 +53,7 @@ module.exports = {
         }
     },
     output: {
-        path: path.resolve(__dirname, 'dist'),
+        path: path.resolve(__dirname, '../dist'),
         filename: 'index.js',
         libraryTarget: 'umd'
     },

@@ -1,5 +1,4 @@
-import { OrderStatus } from '@0x/types';
-import * as _ from 'lodash';
+import { OrderStatus } from '../../../../../index';
 
 import { BigNumber } from '../../configured_bignumber';
 import { RevertError } from '../revert_error';

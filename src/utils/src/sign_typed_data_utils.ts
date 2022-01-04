@@ -1,4 +1,4 @@
-import { EIP712Object, EIP712ObjectValue, EIP712TypedData, EIP712Types } from '@0x/types';
+import { EIP712Object, EIP712ObjectValue, EIP712TypedData, EIP712Types } from '../../../index';
 import * as ethUtil from 'ethereumjs-util';
 import * as ethers from 'ethers';
 import * as _ from 'lodash';

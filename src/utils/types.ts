@@ -1,4 +1,4 @@
-import { ECSignature } from '@0x/types';
+import { ECSignature } from '../../index';
 import { JSONRPCRequestPayload } from 'ethereum-types';
 export interface LedgerCommunicationClient {
     close: () => Promise<void>;

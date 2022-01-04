@@ -1,3 +1,4 @@
+
 import {ethers, Signer} from 'ethers'
 
 import BigNumber from 'bignumber.js'
@@ -41,13 +42,12 @@ export interface BaseOrder {
     makerFee: BigNumber;
     takerFee: BigNumber;
     expirationTimeSeconds: BigNumber;
-    salt: BigNumber;
+    salt: string;
     makerAssetData: string;
     takerAssetData: string;
     makerFeeAssetData: string;
     takerFeeAssetData: string;
 }
-
 
 export interface Order extends BaseOrder {
     chainId: number;

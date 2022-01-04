@@ -1,9 +1,29 @@
-require('module-alias/register');
+// let img = 'module-alias/register';
+// require(`${img}`)
+
+// import * from 'module-alias/register';
+
+// import moduleAlias from 'module-alias'
+// //
+// moduleAlias.addAlias('@0x/types', __dirname + '/src/types/types')
+// moduleAlias.addAlias('@0x/assert', __dirname + '/src/assert/index')
+// moduleAlias.addAlias('@0x/utils', __dirname + '/src/utils/index')
+// //
+// // moduleAlias(__dirname + '/package.json')
+// moduleAlias()
+
+// "_moduleAliases": {
+//     "@0x/types": "./src/types/types",
+//         "@0x/assert": "./src/assert/index",
+//         "@0x/utils": "./src/utils/index"
+// }
+
+const typesPath = './src/types';
 export {
     NULL_ADDRESS,
     BigNumber, ethers, SignatureType,
     OrderStatus, MarketOperation, AssetProxyId
-} from '@0x/types';
+} from './src/types';
 export type {
     DealOrder,
     BaseOrder,
@@ -11,7 +31,7 @@ export type {
     Order,
     OrderState,
     ExcludeBaseOrder
-} from '@0x/types';
+} from './src/types';
 export type {
     EIP712DomainWithDefaultSchema,
     EIP712Object,
@@ -19,7 +39,7 @@ export type {
     EIP712TypedData,
     EIP712Types,
     EIP712Parameter
-} from '@0x/types';
+} from './src/types';
 
 export type {
     AssetData,
@@ -33,7 +53,7 @@ export type {
     MultiAssetData,
     MultiAssetDataWithRecursiveDecoding,
     AssetProxyKey
-} from '@0x/types';
+} from './src/types';
 
 export type {
     WalletInfo,
@@ -45,14 +65,14 @@ export type {
     SignedZeroExTransaction,
     ZeroExTransaction,
     ObjectMap,
-} from '@0x/types'
+} from './src/types'
 
-export {assert, schemas} from '@0x/assert'
+export {assert, schemas} from './src/assert'
 
 export {
     RevertError,
     ExchangeRevertErrors, decodeBytesAsRevertError
-} from '@0x/utils';
+} from './src/utils'
 
 export {
     AbiEncoder,
@@ -61,8 +81,9 @@ export {
     providerUtils,
     abiUtils,
     generatePseudoRandom256BitNumber
-} from '@0x/utils';
-export type {DecodingRules} from '@0x/utils';
+} from './src/utils';
+
+export type {DecodingRules} from './src/utils';
 
 export {Web3Wrapper} from './src/web3_wrapper'
 

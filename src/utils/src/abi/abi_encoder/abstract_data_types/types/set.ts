@@ -1,4 +1,4 @@
-import { ObjectMap } from '@0x/types';
+import { ObjectMap } from '../../../../../../../index';;
 import { DataItem } from 'ethereum-types';
 import * as ethUtil from 'ethereumjs-util';
 import * as _ from 'lodash';
