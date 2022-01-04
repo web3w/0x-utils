@@ -1,4 +1,3 @@
-
 import {ethers, Signer} from 'ethers'
 
 import BigNumber from 'bignumber.js'
@@ -20,14 +19,12 @@ import {
 export {BigNumber, ethers, Signer, NULL_ADDRESS}
 
 
-
-
-
 export interface WalletInfo {
     chainId: number,
     address: string,
     priKey?: string,
-    rpcUrl?: string
+    rpcUrl?: string,
+    signer?: Signer
 }
 
 export type WalletPrikey = Required<Pick<WalletInfo, 'priKey' | 'chainId'>>
@@ -212,7 +209,6 @@ export interface OrderStateInvalid {
 }
 
 export type OrderState = OrderStateValid | OrderStateInvalid;
-
 
 
 export enum SignatureType {
