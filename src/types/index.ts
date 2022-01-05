@@ -39,7 +39,7 @@ export interface BaseOrder {
     makerFee: BigNumber;
     takerFee: BigNumber;
     expirationTimeSeconds: BigNumber;
-    salt: string;
+    salt: BigNumber;
     makerAssetData: string;
     takerAssetData: string;
     makerFeeAssetData: string;
