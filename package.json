@@ -1,6 +1,6 @@
 {
   "name": "@txdev/0x-utils",
-  "version": "1.0.9",
+  "version": "1.1.1",
   "description": "Javascript SDK for the NFT Market ",
   "main": "lib/index.js",
   "type": "lib/index.d.ts",

@@ -1,36 +1,32 @@
-
-export { addressUtils } from './src/address_utils'
-export { classUtils } from './src/class_utils'
-export { deleteNestedProperty } from './src/delete_nested_property'
-export { intervalUtils } from './src/interval_utils'
-export { providerUtils } from './src/provider_utils'
-export { BigNumber } from './src/configured_bignumber'
-export { AbiDecoder } from './src/abi/abi_decoder'
-export { logUtils } from './src/log_utils'
-export { abiUtils } from './src/abi/abi_utils'
+export {addressUtils} from './src/address_utils'
+export {intervalUtils} from './src/interval_utils'
+export {providerUtils} from './src/provider_utils'
+export {BigNumber} from './src/configured_bignumber'
+export {AbiDecoder} from './src/abi/abi_decoder'
+export {abiUtils} from './src/abi/abi_utils'
 // export { NULL_BYTES, NULL_ADDRESS } from './src/constants'
-export { constants as AbiEncoderConstants } from './src/abi/abi_encoder/utils/constants'
+// export {constants as AbiEncoderConstants} from './src/abi/abi_encoder/utils/constants'
 
-export { signTypedDataUtils } from './src/sign_typed_data_utils'
-export { hexUtils } from './src/hex_utils'
+export {signTypedDataUtils} from './src/sign_typed_data_utils'
+export {hexUtils} from './src/hex_utils'
 import * as AbiEncoder from './src/abi/abi_encoder'
 
-export { AbiEncoder }
+export {AbiEncoder}
 // export type { EncodingRules, DecodingRules } from './src/abi/abi_encoder';
-export type { EncodingRules, DecodingRules } from './src/abi/abi_encoder/utils/rules'
+export type {EncodingRules, DecodingRules} from './src/abi/abi_encoder/utils/rules'
 export * from './src/types'
-export { generatePseudoRandom256BitNumber } from './src/random'
+export {generatePseudoRandom256BitNumber} from './src/random'
 export {
-  decodeBytesAsRevertError,
-  decodeThrownErrorAsRevertError,
-  coerceThrownErrorAsRevertError,
-  RawRevertError,
-  registerRevertErrorType,
-  RevertError,
-  StringRevertError,
-  AnyRevertError
+    decodeBytesAsRevertError,
+    decodeThrownErrorAsRevertError,
+    coerceThrownErrorAsRevertError,
+    RawRevertError,
+    registerRevertErrorType,
+    RevertError,
+    StringRevertError,
+    AnyRevertError
 } from './src/revert_errors/revert_error'
-export { fromTokenUnitAmount, toTokenUnitAmount } from './src/token_utils'
+export {fromTokenUnitAmount, toTokenUnitAmount} from './src/token_utils'
 
 export import BrokerRevertErrors = require('./src/revert_errors/broker/revert_errors')
 export import CoordinatorRevertErrors = require('./src/revert_errors/coordinator/revert_errors')
@@ -49,14 +45,31 @@ export import ReentrancyGuardRevertErrors = require('./src/revert_errors/utils/r
 export import SafeMathRevertErrors = require('./src/revert_errors/utils/safe_math_revert_errors')
 
 export const ZeroExRevertErrors = {
-  Common: require('./src/revert_errors/zero-ex/common_revert_errors'),
-  Proxy: require('./src/revert_errors/zero-ex/proxy_revert_errors'),
-  SimpleFunctionRegistry: require('./src/revert_errors/zero-ex/simple_function_registry_revert_errors'),
-  Ownable: require('./src/revert_errors/zero-ex/ownable_revert_errors'),
-  Spender: require('./src/revert_errors/zero-ex/spender_revert_errors'),
-  TransformERC20: require('./src/revert_errors/zero-ex/transform_erc20_revert_errors'),
-  Wallet: require('./src/revert_errors/zero-ex/wallet_revert_errors'),
-  MetaTransactions: require('./src/revert_errors/zero-ex/meta_transaction_revert_errors'),
-  SignatureValidator: require('./src/revert_errors/zero-ex/signature_validator_revert_errors'),
-  LiquidityProvider: require('./src/revert_errors/zero-ex/liquidity_provider_revert_errors')
+    Common: require('./src/revert_errors/zero-ex/common_revert_errors'),
+    Proxy: require('./src/revert_errors/zero-ex/proxy_revert_errors'),
+    SimpleFunctionRegistry: require('./src/revert_errors/zero-ex/simple_function_registry_revert_errors'),
+    Ownable: require('./src/revert_errors/zero-ex/ownable_revert_errors'),
+    Spender: require('./src/revert_errors/zero-ex/spender_revert_errors'),
+    TransformERC20: require('./src/revert_errors/zero-ex/transform_erc20_revert_errors'),
+    Wallet: require('./src/revert_errors/zero-ex/wallet_revert_errors'),
+    MetaTransactions: require('./src/revert_errors/zero-ex/meta_transaction_revert_errors'),
+    SignatureValidator: require('./src/revert_errors/zero-ex/signature_validator_revert_errors'),
+    LiquidityProvider: require('./src/revert_errors/zero-ex/liquidity_provider_revert_errors')
 }
+
+export {
+    createExchangeProxyEIP712Domain,
+    EIP712_DOMAIN_PARAMETERS,
+    getExchangeProxyEIP712Hash,
+    getExchangeProxyEIP712DomainHash,
+    getTypeHash,
+} from './eip712_utils';
+export {
+    eip712SignHashWithKey,
+    eip712SignTypedDataWithProviderAsync,
+    ethSignHashWithKey,
+    ethSignHashWithProviderAsync,
+    SignatureType,
+} from './signature_utils';
+
+export type {Signature} from './signature_utils'

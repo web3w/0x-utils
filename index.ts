@@ -1,27 +1,8 @@
-// let img = 'module-alias/register';
-// require(`${img}`)
 
-// import * from 'module-alias/register';
-
-// import moduleAlias from 'module-alias'
-// //
-// moduleAlias.addAlias('@0x/types', __dirname + '/src/types/types')
-// moduleAlias.addAlias('@0x/assert', __dirname + '/src/assert/index')
-// moduleAlias.addAlias('@0x/utils', __dirname + '/src/utils/index')
-// //
-// // moduleAlias(__dirname + '/package.json')
-// moduleAlias()
-
-// "_moduleAliases": {
-//     "@0x/types": "./src/types/types",
-//         "@0x/assert": "./src/assert/index",
-//         "@0x/utils": "./src/utils/index"
-// }
-
-const typesPath = './src/types';
 export {
-    NULL_ADDRESS,
-    BigNumber, ethers, SignatureType,
+    Contract, ethers, Signer,
+    NULL_ADDRESS, ZERO,
+    BigNumber, ETH_TOKEN_ADDRESS,
     OrderStatus, MarketOperation, AssetProxyId
 } from './src/types';
 export type {
@@ -30,7 +11,8 @@ export type {
     SignedOrder,
     Order,
     OrderState,
-    ExcludeBaseOrder
+    ExcludeBaseOrder,
+    ContractInterface
 } from './src/types';
 export type {
     EIP712DomainWithDefaultSchema,
@@ -88,3 +70,19 @@ export type {DecodingRules} from './src/utils';
 export {Web3Wrapper} from './src/web3_wrapper'
 
 
+export {
+    createExchangeProxyEIP712Domain,
+    EIP712_DOMAIN_PARAMETERS,
+    getExchangeProxyEIP712Hash,
+    getTypeHash,
+} from './src/utils';
+export {
+    eip712SignHashWithKey,
+    eip712SignTypedDataWithProviderAsync,
+    ethSignHashWithKey,
+    ethSignHashWithProviderAsync,
+    SignatureType,
+} from './src/utils';
+
+
+export type {Signature} from './src/utils'

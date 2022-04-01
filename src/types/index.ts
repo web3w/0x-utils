@@ -1,10 +1,13 @@
-import {ethers, Signer} from 'ethers'
+export {ethers, Signer, Contract} from 'ethers'
+export type {ContractInterface} from 'ethers'
 
 import BigNumber from 'bignumber.js'
 
 BigNumber.config({EXPONENTIAL_AT: 1e9})
 const NULL_ADDRESS = '0x0000000000000000000000000000000000000000';
+export const ZERO = new BigNumber(0);
 
+export const ETH_TOKEN_ADDRESS = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee';
 
 import {
     ContractAbi,
@@ -16,7 +19,7 @@ import {
 } from 'ethereum-types'
 
 
-export {BigNumber, ethers, Signer, NULL_ADDRESS}
+export {BigNumber, NULL_ADDRESS}
 
 
 export interface WalletInfo {
@@ -24,7 +27,7 @@ export interface WalletInfo {
     address: string,
     priKey?: string,
     rpcUrl?: string,
-    signer?: Signer
+    signer?: any
 }
 
 export type WalletPrikey = Required<Pick<WalletInfo, 'priKey' | 'chainId'>>
@@ -210,6 +213,12 @@ export interface OrderStateInvalid {
 
 export type OrderState = OrderStateValid | OrderStateInvalid;
 
+
+//     Illegal = 0,
+//     Invalid = 1,
+//     EIP712 = 2,
+//     EthSign = 3,
+//     PreSigned = 4,
 
 export enum SignatureType {
     Illegal,
